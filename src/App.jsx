@@ -1,0 +1,18 @@
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import LoginPage from "./pages/LoginPage";
+import RegisterPage from "./pages/RegisterPage";
+import HomeLayouts from "./components/template/HomeLayouts";
+
+function App() {
+  return (
+    <Router>
+      <Routes>
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/homepage" element={<HomeLayouts />} />
+      </Routes>
+    </Router>
+  );
+}
+
+export default App;
