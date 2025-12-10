@@ -1,16 +1,8 @@
-import { useNavigate } from "react-router-dom";
 import AuthLayout from "../components/template/AuthLayout";
 import LoginForm from "../components/organisms/LoginForm";
 import Logo from "../../public/img/Logo.png";
 
 const LoginPage = () => {
-  const navigate = useNavigate();
-
-  const handleLogin = (e) => {
-    e.preventDefault();
-    navigate("/homepage");
-  };
-
   return (
     <AuthLayout>
       <div className="flex items-center justify-center mb-6">
@@ -22,7 +14,7 @@ const LoginPage = () => {
         Selamat datang kembali!
       </p>
 
-      <LoginForm onSubmit={handleLogin} />
+      <LoginForm />
     </AuthLayout>
   );
 };

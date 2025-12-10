@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { User, Star, LogOut, ChevronDown } from "lucide-react";
 import Logo from "../../../public/img/avatar.png";
+import { Link } from "react-router-dom";
+import LogoutButton from "../atoms/LogoutButton";
 
 const Dropdown = () => {
   const [open, setOpen] = useState(false);
@@ -35,7 +37,7 @@ const Dropdown = () => {
                 className="flex items-center gap-2 px-4 py-2 hover:bg-neutral-800 transition"
               >
                 <User className="w-4 h-4" />
-                Profil Saya
+                <Link to={"/profile"}>Profile</Link>
               </a>
             </li>
             <li>
@@ -53,7 +55,7 @@ const Dropdown = () => {
                 className="flex items-center gap-2 px-4 py-2 hover:bg-neutral-800 transition"
               >
                 <LogOut className="w-4 h-4 text-red-400" />
-                Keluar
+                <LogoutButton />
               </a>
             </li>
           </ul>

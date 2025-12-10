@@ -1,7 +1,6 @@
 import Logo from "../../../public/img/Logo.png";
 import Dropdown from "./DropDown";
-// import Dropdown from "./Dropdown";
-
+import GenreMobile from "./series/GenreMobile";
 const Navbar = () => {
   return (
     <nav className="bg-black text-white px-6 py-4 flex items-center justify-between w-full relative z-50">
@@ -17,9 +16,19 @@ const Navbar = () => {
 
         {/* Menu Desktop */}
         <ul className="md:flex flex gap-6 md:ml-10  text-sm  font-semibold">
-          <li className="cursor-pointer hover:text-gray-300">Series</li>
-          <li className="cursor-pointer hover:text-gray-300">Film</li>
-          <li className="cursor-pointer hover:text-gray-300">Daftar Saya</li>
+          <li className="cursor-pointer hover:text-gray-300">
+            <a href="/Series">Series</a>
+          </li>
+          <li className="cursor-pointer hover:text-gray-300">
+            <a href="/Film">Film</a>
+          </li>
+          <li className="cursor-pointer hover:text-gray-300">
+            <a href="/DaftarSaya">Daftar Saya</a>
+          </li>
+          <li className="cursor-pointer hover:text-gray-300 lg:hidden">
+            {/* <a href="/DaftarSaya">Genre</a> */}
+            <GenreMobile />
+          </li>
         </ul>
       </div>
       {/* Kanan: Avatar dan Dropdown */}
