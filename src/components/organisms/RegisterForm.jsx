@@ -2,20 +2,25 @@ import InputField from "../molecules/InputField";
 import PasswordField from "../molecules/PasswordField";
 import Button from "../atoms/Button";
 import GoogleButton from "../atoms/GoogleButton";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Logo from "../../../public/img/Logo.png";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { registerUser } from "../../store/authSlice";
+import Notifikasi from "../../pages/Notifikasi";
 
 const RegisterForm = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const [showPassword, setShowPassword] = useState(false);
+  const [success, setSuccess] = useState(false);
 
   const [form, setForm] = useState({
     username: "",
     password: "",
     konfirmasiPassword: "",
   });
-
-  const togglePassword = () => setShowPassword(!showPassword);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -36,30 +41,34 @@ const RegisterForm = () => {
       return;
     }
 
-    // Ambil data lama
-    const users = JSON.parse(localStorage.getItem("users")) || [];
+    try {
+      dispatch(
+        registerUser({
+          username,
+          password,
+        })
+      );
 
-    // Push user baru
-    users.push({
-      username: username,
-      password: password,
-    });
+      setSuccess(true);
 
-    // Simpan kembali ke localStorage
-    localStorage.setItem("users", JSON.stringify(users));
+      setTimeout(() => {
+        navigate("/");
+      }, 1500);
 
-    alert("Berhasil registrasi!");
-
-    // Reset form
-    setForm({
-      username: "",
-      password: "",
-      konfirmasiPassword: "",
-    });
+      setForm({
+        username: "",
+        password: "",
+        konfirmasiPassword: "",
+      });
+    } catch (error) {
+      alert(error.message);
+    }
   };
 
   return (
     <div>
+      {success && <Notifikasi text="Registrasi berhasil!" />}
+
       <div className="text-center mb-6">
         <div className="flex justify-center mb-2">
           <div className="bg-white text-black p-2 rounded">
@@ -73,7 +82,6 @@ const RegisterForm = () => {
 
       <form onSubmit={handleRegister}>
         <InputField
-          type="text"
           label="Username"
           name="username"
           value={form.username}
@@ -89,10 +97,6 @@ const RegisterForm = () => {
           onChange={handleChange}
           placeholder="Masukkan kata sandi"
         />
-
-        {/* <button type="button" onClick={togglePassword}>
-          👁️
-        </button> */}
 
         <PasswordField
           label="Konfirmasi Kata Sandi"
@@ -113,7 +117,6 @@ const RegisterForm = () => {
         <Button type="submit">Daftar</Button>
 
         <div className="my-4 text-center text-gray-500 text-sm">Atau</div>
-
         <GoogleButton />
       </form>
     </div>

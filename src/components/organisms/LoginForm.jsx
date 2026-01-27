@@ -2,66 +2,53 @@ import InputField from "../molecules/InputField";
 import PasswordField from "../molecules/PasswordField";
 import Button from "../atoms/Button";
 import { useNavigate, Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
+import { loginUser, clearError } from "../../store/authSlice";
+
 const LoginForm = () => {
   const navigate = useNavigate();
-  // const [showPassword, setShowPassword] = useState(false);
+  const dispatch = useDispatch();
+  const { error, isLogin } = useSelector((state) => state.auth);
 
   const [form, setForm] = useState({
     username: "",
     password: "",
   });
 
-  const [error, setError] = useState("");
-
-  // const togglePassword = () => setShowPassword(!showPassword);
-
   const handleChange = (e) => {
+    dispatch(clearError());
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
   const handleLogin = (e) => {
     e.preventDefault();
-    const users = JSON.parse(localStorage.getItem("users")) || [];
 
-    // Cek apakah username & password cocok
-    const userFound = users.find(
-      (u) => u.username === form.username && u.password === form.password
-    );
+    dispatch(loginUser(form));
 
-    if (!userFound) {
-      setError("Username atau password salah!");
-      return;
-    }
-
-    // Jika berhasil login → buat sesi
-    localStorage.setItem("login", "true");
-    localStorage.setItem("user", form.username);
-
-    alert("Login berhasil!");
-    navigate("/homepage");
+    setTimeout(() => {
+      if (isLogin) navigate("/homepage");
+    }, 100);
   };
+
   return (
     <form onSubmit={handleLogin}>
       <InputField
         label="Username"
         name="username"
-        type="text"
-        placeholder="Masukkan username"
         value={form.username}
         onChange={handleChange}
+        placeholder="Masukkan username"
       />
 
       <PasswordField
         label="Kata Sandi"
-        type="password"
         name="password"
         value={form.password}
         onChange={handleChange}
         placeholder="Masukkan kata sandi"
       />
 
-      {/* Notifikasi Error */}
       {error && (
         <div className="bg-red-600 text-white p-2 rounded mb-4 text-center">
           {error}
@@ -81,7 +68,6 @@ const LoginForm = () => {
       </div>
 
       <Button type="submit">Masuk</Button>
-
       <div className="my-4 text-center text-sm text-gray-400">Atau</div>
 
       <button className="flex items-center justify-center w-full py-2 border bg-[#2A2A2A] rounded-3xl hover:bg-gray-800 transition">

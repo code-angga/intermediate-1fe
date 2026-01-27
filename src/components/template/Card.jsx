@@ -1,95 +1,115 @@
-import React from "react";
+import { useRef } from "react";
+import { FaChevronLeft, FaChevronRight, FaPlay, FaPlus } from "react-icons/fa";
+import { useDispatch } from "react-redux";
+import { fetchTrailer, saveMovie } from "../../store/movieSlice";
+import { useNavigate } from "react-router-dom";
+// import { FaPlay } from "react-icons/fa";
 
-const Card = () => {
+const Card = ({ movies = [] }) => {
+  const IMAGE_URL = "https://image.tmdb.org/t/p/w500";
+  const scrollRef = useRef(null);
+  const dispatch = useDispatch();
+
+  if (!Array.isArray(movies)) return null;
+
+  const scroll = (dir) => {
+    scrollRef.current?.scrollBy({
+      left: dir === "left" ? -320 : 320,
+      behavior: "smooth",
+    });
+  };
+
   return (
-    <div className="bg-gray-900 text-white">
-      <Section title="Melanjutkan Tonton Film">
-        <CardRow
-          images={[
-            "/../public/img/Frame66.png",
-            "/../public/img/Frame666.png",
-            "/../public/img/Frame67.png",
-            "/../public/img/Frame68.png",
-          ]}
-        />
-      </Section>
-      {/* Section: Top Rating */}
-      <Section title="Top Rating Film dan Series Hari ini">
-        <CardGrid
-          images={[
-            "/../public/img/Frame68.png",
-            "/../public/img/Frame74.png",
-            "/../public/img/Frame76.png",
-            "/../public/img/Frame77.png",
-          ]}
-        />
-      </Section>
-      {/* Section: Film Trending */}
-      <Section title="Film Trending">
-        <CardGrid
-          images={[
-            "/../public/img/Frame78.png",
-            "/../public/img/Frame79.png",
-            "/../public/img/Frame666.png",
-            "/../public/img/Frame744.png",
-          ]}
-        />
-      </Section>
-      {/* Section: Rilis Baru */}
-      <Section title="Rilis Baru">
-        <CardGrid
-          images={[
-            "/../public/img/Frame766.png",
-            "/../public/img/Frame777.png",
-            "/../public/img/Frame788.png",
-            "/../public/img/Frame799.png",
-          ]}
-        />
-      </Section>
+    <div className="relative">
+      {/* ARROW LEFT */}
+      <div
+        role="button"
+        onClick={() => scroll("left")}
+        className="absolute left-0 top-1/2 -translate-y-1/2 z-50 bg-black/70 p-2 rounded-full text-white cursor-pointer"
+      >
+        <FaChevronLeft />
+      </div>
+
+      {/* ARROW RIGHT */}
+      <div
+        role="button"
+        onClick={() => scroll("right")}
+        className="absolute right-0 top-1/2 -translate-y-1/2 z-50 bg-black/70 p-2 rounded-full text-white cursor-pointer"
+      >
+        <FaChevronRight />
+      </div>
+
+      {/* SCROLL LIST */}
+      <div
+        ref={scrollRef}
+        className="flex flex-nowrap gap-4 overflow-x-auto scrollbar-hide px-12"
+      >
+        {movies.map((movie) => (
+          <div
+            key={movie.id}
+            className="relative group min-w-[160px] flex-shrink-0"
+          >
+            {/* POSTER */}
+            <img
+              src={
+                movie.poster_path
+                  ? `${IMAGE_URL}${movie.poster_path}`
+                  : "/no-image.png"
+              }
+              alt={movie.title}
+              className="w-full h-56 object-cover rounded-lg transition group-hover:opacity-30"
+            />
+
+            {/* HOVER POPUP */}
+            <div className="pointer-events-none absolute -top-8 left-1/2 -translate-x-1/2 w-[280px] bg-zinc-900 rounded-xl opacity-0 scale-95 group-hover:opacity-100 group-hover:scale-100 transition z-20">
+              <img
+                src={
+                  movie.backdrop_path
+                    ? `${IMAGE_URL}${movie.backdrop_path}`
+                    : `${IMAGE_URL}${movie.poster_path}`
+                }
+                className="w-full h-36 object-cover rounded-t-xl"
+              />
+
+              <div className="p-3 pointer-events-auto">
+                <h3 className="text-white font-semibold text-sm mb-2 truncate">
+                  {movie.title}
+                </h3>
+
+                <div className="flex gap-2">
+                  {/* PLAY */}
+                  <div
+                    role="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      dispatch(fetchTrailer(movie.id));
+                    }}
+                    className="flex items-center gap-1 bg-red-600 text-white text-xs px-3 py-1 rounded cursor-pointer hover:bg-red-700"
+                  >
+                    <FaPlay /> Tonton
+                  </div>
+
+                  {/* SAVE */}
+                  <div
+                    role="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      dispatch(saveMovie(movie));
+                    }}
+                    className="flex items-center gap-1 bg-gray-700 text-white text-xs px-3 py-1 rounded cursor-pointer hover:bg-gray-800"
+                  >
+                    <FaPlus /> Simpan
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <p className="text-white text-sm mt-2 truncate">{movie.title}</p>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
-//  Reusable Section Component
-function Section({ title, children }) {
-  return (
-    <div className="px-6 md:px-20 py-10">
-      <h2 className="text-lg md:text-xl font-bold mb-4">{title}</h2>
-      {children}
-    </div>
-  );
-}
-
-// Horizontal Cards (responsive scroll)
-function CardRow({ images }) {
-  return (
-    <div className="grid lg:grid-cols-4 sm:grid-cols-2 md:grid-cols-4 gap-4 ">
-      {/*   flex space-x-4 overflow-x-auto scrollbar-hide */}
-      {images.map((img, i) => (
-        <img
-          key={i}
-          src={img}
-          alt="poster"
-          className="w-full h-32 md:h-40 object-cover rounded-lg"
-        />
-      ))}
-    </div>
-  );
-}
-
-// Grid Cards (responsive)
-function CardGrid({ images }) {
-  return (
-    <div className="grid grid-cols-4 sm:grid-cols-3 md:grid-cols-4 gap-4">
-      {images.map((img, i) => (
-        <img
-          key={i}
-          src={img}
-          alt="poster"
-          className="w-full h-48 md:h-60 object-cover rounded-lg"
-        />
-      ))}
-    </div>
-  );
-}
 
 export default Card;
