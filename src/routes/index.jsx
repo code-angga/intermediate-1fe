@@ -7,6 +7,8 @@ import DaftarSaya from "../components/organisms/daftarSaya/DaftarSaya";
 import Series from "../components/organisms/series/Series";
 import Film from "../components/organisms/film/Film";
 import Profile from "../pages/Profile";
+import Toast from "../components/atoms/Toast";
+// import TrailerModal from "../pages/TrailerModal";
 
 export const router = createBrowserRouter([
   {
@@ -21,6 +23,11 @@ export const router = createBrowserRouter([
     path: "/homepage",
     element: <HomeLayouts />,
   },
+  // {
+  //   path: "/trailer/:id",
+  //   element: <TrailerModal />,
+  // },
+
   {
     path: "/daftarsaya",
     element: <DaftarSaya />,
@@ -37,4 +44,6 @@ export const router = createBrowserRouter([
     path: "/profile",
     element: <Profile />,
   },
+
+  <Toast />,
 ]);

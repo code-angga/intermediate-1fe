@@ -16,13 +16,13 @@ const Navbar = () => {
 
         {/* Menu Desktop */}
         <ul className="md:flex flex gap-6 md:ml-10  text-sm  font-semibold">
-          <li className="cursor-pointer hover:text-gray-300">
+          <li className="cursor-pointer hover:text-gray-300 hover:underline">
             <a href="/Series">Series</a>
           </li>
-          <li className="cursor-pointer hover:text-gray-300">
+          <li className="cursor-pointer hover:text-gray-300 hover:underline">
             <a href="/Film">Film</a>
           </li>
-          <li className="cursor-pointer hover:text-gray-300">
+          <li className="cursor-pointer hover:text-gray-300 hover:underline">
             <a href="/DaftarSaya">Daftar Saya</a>
           </li>
           <li className="cursor-pointer hover:text-gray-300 lg:hidden">
@@ -31,7 +31,7 @@ const Navbar = () => {
           </li>
         </ul>
       </div>
-      {/* Kanan: Avatar dan Dropdown */}
+
       <div className="flex items-center gap-2">
         {/* <Dropdown /> */}
         <Dropdown />
