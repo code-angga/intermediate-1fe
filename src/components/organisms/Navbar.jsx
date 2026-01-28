@@ -1,5 +1,5 @@
 import Logo from "../../../public/img/Logo.png";
-import Dropdown from "./DropDown";
+import Dropdown from "./Dropdown";
 import GenreMobile from "./series/GenreMobile";
 const Navbar = () => {
   return (
