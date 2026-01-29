@@ -3,9 +3,9 @@ import { closeTrailer } from "../store/movieSlice";
 
 const TrailerModal = () => {
   const dispatch = useDispatch();
-  const { showTrailer, trailerKey } = useSelector((state) => state.movies);
+  const { isTrailerOpen, trailerKey } = useSelector((state) => state.movies);
 
-  if (!showTrailer || !trailerKey) return null;
+  if (!isTrailerOpen || !trailerKey) return null;
 
   return (
     <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center">
