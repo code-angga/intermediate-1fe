@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 import YouTube from "react-youtube";
-import Card from "../template/Card";
 
 const HeroSection = () => {
   const playerRef = useRef(null);
@@ -44,10 +43,11 @@ const HeroSection = () => {
       controls: 0,
       modestbranding: 1,
       loop: 1,
-      playlist: videoId, // WAJIB untuk loop
+      playlist: videoId,
       rel: 0,
-      showinfo: 0,
       mute: 1,
+      enablejsapi: 1,
+      origin: window.location.origin,
     },
   };
 
@@ -105,9 +105,6 @@ const HeroSection = () => {
           </div>
         </div>
       </section>
-
-      {/* LANJUT NONTON */}
-      {/* <Card /> */}
     </div>
   );
 };
