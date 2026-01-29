@@ -1,32 +1,33 @@
-// import { useEffect } from "react";
-// import { useDispatch, useSelector } from "react-redux";
-// import { useParams } from "react-router-dom";
-// import { fetchTrailer } from "../store/movieSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { closeTrailer } from "../store/movieSlice";
 
-// const TrailerModal = () => {
-//   const { id } = useParams();
-//   const dispatch = useDispatch();
-//   const { trailerKey, loading } = useSelector((state) => state.movies);
+const TrailerModal = () => {
+  const dispatch = useDispatch();
+  const { showTrailer, trailerKey } = useSelector((state) => state.movies);
 
-//   useEffect(() => {
-//     dispatch(fetchTrailer(id));
-//   }, [dispatch, id]);
+  if (!showTrailer || !trailerKey) return null;
 
-//   if (loading) return <p className="text-white">Loading trailer...</p>;
+  return (
+    <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center">
+      <div className="relative w-full max-w-4xl aspect-video">
+        <button
+          type="button"
+          onClick={() => dispatch(closeTrailer())}
+          className="absolute -top-10 right-0 text-white text-xl"
+        >
+          ✖
+        </button>
 
-//   if (!trailerKey) return <p className="text-white">Trailer tidak ditemukan</p>;
+        <iframe
+          src={`https://www.youtube.com/embed/${trailerKey}?autoplay=1`}
+          title="Trailer"
+          allow="autoplay; encrypted-media"
+          allowFullScreen
+          className="w-full h-full rounded-lg"
+        />
+      </div>
+    </div>
+  );
+};
 
-//   return (
-//     <div className="bg-black min-h-screen flex items-center justify-center">
-//       <iframe
-//         className="w-full max-w-5xl aspect-video"
-//         src={`https://www.youtube.com/embed/${trailerKey}?autoplay=1`}
-//         allow="autoplay; encrypted-media"
-//         allowFullScreen
-//         title="Trailer"
-//       />
-//     </div>
-//   );
-// };
-
-// export default TrailerModal;
+export default TrailerModal;

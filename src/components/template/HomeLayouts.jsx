@@ -10,7 +10,7 @@ import {
   fetchUpcoming,
 } from "../../store/movieSlice";
 import Card from "../template/Card";
-// import TrailerModal from "../../pages/TrailerModal";
+import TrailerModal from "../../pages/TrailerModal";
 
 const HomeLayouts = () => {
   const dispatch = useDispatch();
@@ -56,7 +56,7 @@ const HomeLayouts = () => {
         </section>
       </div>
 
-      {/* <TrailerModal /> */}
+      <TrailerModal />
 
       <Footer />
     </div>

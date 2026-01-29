@@ -11,8 +11,8 @@ const limit = (results) => results.slice(0, 9);
 
 export const getMelanjutkan = async () => {
   const { data } = await api.get("/movie/popular");
-  // return limit(data.results);
-  console.log({ data });
+  return limit(data.results);
+  // console.log({ data });
 };
 
 export const getTopRated = async () => {
@@ -29,14 +29,17 @@ export const getTrending = async () => {
 
 export const getUpcoming = async () => {
   const { data } = await api.get("/movie/top_rated");
-  // return limit(data.results);
-  console.log({ data });
+  return limit(data.results);
+  // console.log({ data });
 };
 
-// export const getMovieTrailer = async (movieId) => {
-//   const { data } = await api.get(`/movie/${movieId}/videos`);
+//export const getMovieTrailer = async (movieId) => {
+export const getMovieTrailer = async (movieId) => {
+  const { data } = await api.get(`/movie/${movieId}/videos`);
 
-//   const trailer = data.results.find(
-//     (v) => v.type === "Trailer" && v.site === "YouTube",
-//   );
-// };
+  const trailer = data.results.find(
+    (v) => v.type === "Trailer" && v.site === "YouTube",
+  );
+
+  return trailer ? trailer.key : null;
+};
