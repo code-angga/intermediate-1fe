@@ -7,7 +7,10 @@ import {
   getMovieTrailer,
 } from "../service/api";
 
-/* ================= THUNK ================= */
+// local Srorange
+const savedList = JSON.parse(localStorage.getItem("myList")) || [];
+
+// Thunk
 
 export const fetchMelanjutkan = createAsyncThunk(
   "movies/melanjutkan",
@@ -34,7 +37,7 @@ export const fetchTrailer = createAsyncThunk(
   async (movieId) => await getMovieTrailer(movieId),
 );
 
-/* ================= SLICE ================= */
+// slice
 
 const movieSlice = createSlice({
   name: "movies",
@@ -45,24 +48,46 @@ const movieSlice = createSlice({
     upcoming: [],
     loading: false,
 
+    //  simpan list
+    myList: savedList,
+
+    //  triler
     trailerKey: null,
     isTrailerOpen: false,
-
-    savedMovies: [],
   },
+
   reducers: {
+    openTrailer: (state, action) => {
+      state.trailerKey = action.payload;
+      state.isTrailerOpen = true;
+    },
     closeTrailer: (state) => {
       state.trailerKey = null;
       state.isTrailerOpen = false;
     },
+
     saveMovie: (state, action) => {
-      const exist = state.savedMovies.find((m) => m.id === action.payload.id);
-      if (!exist) state.savedMovies.push(action.payload);
+      const exists = state.myList.find(
+        (movie) => movie.id === action.payload.id,
+      );
+
+      if (!exists) {
+        state.myList.push(action.payload);
+        localStorage.setItem("myList", JSON.stringify(state.myList));
+      }
+    },
+
+    removeMovie: (state, action) => {
+      state.myList = state.myList.filter(
+        (movie) => movie.id !== action.payload,
+      );
+      localStorage.setItem("myList", JSON.stringify(state.myList));
     },
   },
+
   extraReducers: (builder) => {
     builder
-      /* ===== TRAILER ===== */
+      //  triler
       .addCase(fetchTrailer.fulfilled, (state, action) => {
         state.loading = false;
         state.trailerKey = action.payload;
@@ -77,7 +102,7 @@ const movieSlice = createSlice({
         },
       )
 
-      /* ===== MOVIE LIST ===== */
+      // movie list
       .addMatcher(
         (action) =>
           action.type.endsWith("/fulfilled") &&
@@ -98,5 +123,6 @@ const movieSlice = createSlice({
   },
 });
 
-export const { closeTrailer, saveMovie } = movieSlice.actions;
+export const { openTrailer, closeTrailer, saveMovie, removeMovie } =
+  movieSlice.actions;
 export default movieSlice.reducer;

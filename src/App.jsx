@@ -1,18 +1,13 @@
 import { RouterProvider } from "react-router-dom";
 import { router } from "./routes/index";
+import { Toaster } from "react-hot-toast";
 
 function App() {
   return (
-    // <Router>
-    //   <Routes>
-    //     <Route path="/" element={<LoginPage />} />
-    //     <Route path="/register" element={<RegisterPage />} />
-    //     <Route path="/homepage" element={<HomeLayouts />} />
-    //     <Route path="/daftarsaya" element={<DaftarSaya />} />
-    //   </Routes>
-    // </Router>
-
-    <RouterProvider router={router} />
+    <>
+      <Toaster position="top-center" reverseOrder={false} />
+      <RouterProvider router={router} />;
+    </>
   );
 }
 

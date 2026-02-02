@@ -1,11 +1,20 @@
 import { useState } from "react";
 import { User, Star, LogOut, ChevronDown } from "lucide-react";
 import Logo from "../../../public/img/avatar.png";
-import { Link } from "react-router-dom";
-import LogoutButton from "../atoms/LogoutButton";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { logout } from "../../store/authSlice";
 
 const Dropdown = () => {
   const [open, setOpen] = useState(false);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    dispatch(logout()); // 🔥 RESET REDUX + LOCALSTORAGE
+    setOpen(false); // tutup dropdown
+    navigate("/", { replace: true }); // balik ke login
+  };
 
   return (
     <div className="relative">
@@ -19,9 +28,8 @@ const Dropdown = () => {
           alt="avatar"
           className="w-8 h-8 rounded-full border-2 border-gray-700"
         />
-        {/* icon bawah */}
         <ChevronDown
-          className={`w-4 h-4 text-gray-400 transition-transform cursor-pointer ${
+          className={`w-4 h-4 text-gray-400 transition-transform ${
             open ? "rotate-180" : ""
           }`}
         />
@@ -32,31 +40,31 @@ const Dropdown = () => {
         <div className="absolute right-0 mt-2 w-48 bg-neutral-900 border border-gray-700 rounded-lg shadow-lg z-50">
           <ul className="py-2 text-sm text-gray-200">
             <li>
-              <a
-                href="#"
+              <Link
+                to="/profile"
+                onClick={() => setOpen(false)}
                 className="flex items-center gap-2 px-4 py-2 hover:bg-neutral-800 transition"
               >
                 <User className="w-4 h-4" />
-                <Link to={"/profile"}>Profile</Link>
-              </a>
+                Profile
+              </Link>
             </li>
+
             <li>
-              <a
-                href="#"
-                className="flex items-center gap-2 px-4 py-2 hover:bg-neutral-800 transition"
-              >
+              <button className="w-full flex items-center gap-2 px-4 py-2 hover:bg-neutral-800 transition text-left">
                 <Star className="w-4 h-4 text-yellow-400" />
                 Ubah Premium
-              </a>
+              </button>
             </li>
+
             <li>
-              <a
-                href="#"
-                className="flex items-center gap-2 px-4 py-2 hover:bg-neutral-800 transition"
+              <button
+                onClick={handleLogout}
+                className="w-full flex items-center gap-2 px-4 py-2 hover:bg-neutral-800 transition text-left text-red-400"
               >
-                <LogOut className="w-4 h-4 text-red-400" />
-                <LogoutButton />
-              </a>
+                <LogOut className="w-4 h-4" />
+                Logout
+              </button>
             </li>
           </ul>
         </div>

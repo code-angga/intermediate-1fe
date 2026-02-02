@@ -7,8 +7,7 @@ import DaftarSaya from "../components/organisms/daftarSaya/DaftarSaya";
 import Series from "../components/organisms/series/Series";
 import Film from "../components/organisms/film/Film";
 import Profile from "../pages/Profile";
-import Toast from "../components/atoms/Toast";
-// import TrailerModal from "../pages/TrailerModal";
+import ProtectedRoute from "./ProtectedRoute";
 
 export const router = createBrowserRouter([
   {
@@ -20,30 +19,29 @@ export const router = createBrowserRouter([
     element: <RegisterPage />,
   },
   {
-    path: "/homepage",
-    element: <HomeLayouts />,
-  },
-  // {
-  //   path: "/trailer/:id",
-  //   element: <TrailerModal />,
-  // },
+    element: <ProtectedRoute />,
+    children: [
+      {
+        path: "/homepage",
+        element: <HomeLayouts />,
+      },
 
-  {
-    path: "/daftarsaya",
-    element: <DaftarSaya />,
+      {
+        path: "/daftarsaya",
+        element: <DaftarSaya />,
+      },
+      {
+        path: "/series",
+        element: <Series />,
+      },
+      {
+        path: "/film",
+        element: <Film />,
+      },
+      {
+        path: "/profile",
+        element: <Profile />,
+      },
+    ],
   },
-  {
-    path: "/series",
-    element: <Series />,
-  },
-  {
-    path: "/film",
-    element: <Film />,
-  },
-  {
-    path: "/profile",
-    element: <Profile />,
-  },
-
-  <Toast />,
 ]);

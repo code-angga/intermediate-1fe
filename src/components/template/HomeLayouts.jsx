@@ -11,6 +11,7 @@ import {
 } from "../../store/movieSlice";
 import Card from "../template/Card";
 import TrailerModal from "../../pages/TrailerModal";
+import { Outlet } from "react-router-dom";
 
 const HomeLayouts = () => {
   const dispatch = useDispatch();
@@ -57,7 +58,7 @@ const HomeLayouts = () => {
       </div>
 
       <TrailerModal />
-
+      <Outlet />
       <Footer />
     </div>
   );
